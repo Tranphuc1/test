@@ -8,8 +8,8 @@
 
 import React from 'react';
 import {FlatList,StyleSheet, View,Text,Button,TouchableOpacity} from 'react-native';
-
-export default class HomeScreenDetail extends React.Component {
+import { connect } from 'react-redux';
+class HomeScreenDetail extends React.Component {
     static navigationOptions = {
     title: 'HomeScreenDetail',
     headerStyle: {
@@ -71,18 +71,17 @@ export default class HomeScreenDetail extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, paddingTop:20}}> 
-        
+      <View style={{flex: 1, paddingTop:20}}>
         <FlatList
         data={this.state.data}
         renderItem={({item,index}) =>
             <View style={styles.item}>
               <TouchableOpacity onPress ={  onPress= () =>{
-                  this.props.navigation.navigate('UserProfile', {
-                    item:item
-                  });
-                }}>
-                <Text> TASK_CODE:{item.task_code} </Text>
+                  this.props.navigation.navigate('UserProfile');
+                  this.props.dispatch({type:'UP_DATA',item:item})
+                }}
+                >
+                <Text>TASK_CODE:{item.task_code} </Text>
                 <Text>DESCRIPTION:{item.description}</Text>
                 <Text>NAME:{item.task_name}</Text>
                 <Text>Created_at:{item.created_at}</Text>
@@ -107,13 +106,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2
   }
 })
-// const AppNavigator = createStackNavigator({
-//   HomeDetail: HomeScreenDetail,
-//   UserProfile: {
-//     screen: UserProfileScreen,
-//     navigationOptions: () => ({
-//       headerBackTitle:null
-//     }),
-//   }
-// });
-// export default createAppContainer (AppNavigator);
+export default connect()(HomeScreenDetail)
